@@ -1,6 +1,5 @@
 #include <iostream>
-#include <winsock.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include <string>
 
 using namespace std;

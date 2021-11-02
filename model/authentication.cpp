@@ -1,26 +1,42 @@
+/* 
+    compilar
+    g++ authentication.cpp lib/libdb.cpp lib/libexceptions.cpp -o authentication  -lmysqlclient -ljsoncpp
+*/
 #include <iostream>
-#include <winsock.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
+#include <jsoncpp/json/json.h>
 #include <string>
 #include "lib/libdb.h"
+#include "lib/libexceptions.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
 
-    string operation = argv[1];
+  try {
+    Throw_exceptions throw_exceptions;
+
+    if (argc < 2)
+      throw_exceptions.throw_exception("Parametro nao informado.");
+
+     string operation = argv[1];
 
     if (operation == "-authentication") {
-        if (argc != 3) {
-            cout << "Quantidade parametros inválidos";
-            exit(1);
-        }
-        MYSQL* mysql;
-        // if (!db_connect(mysql, "users")) {
-        //     cout << "Falha ao conectar no banco de dados";
-        //     exit(1);
-        // }
+      if (argc != 3)
+        throw_exceptions.throw_exception("Quantida de parametros incorreto.");
 
-        // mysql_close(mysql);
+      MYSQL mysql;
+      if (db_connect(mysql, "users") != 0)
+        throw_exceptions.throw_db_exception(mysql,"Falha ao conectar ao banco de dados.");
+
+      mysql_close(&mysql);
+    } else {
+      cout << "Opção desconhecida" << endl;
+      exit(0);
     }
+  }
+  catch(const exception &e)
+  {
+    std::cerr << e.what() << '\n';
+  }
 }
