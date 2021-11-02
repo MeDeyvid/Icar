@@ -1,4 +1,4 @@
-# icar
+# view
 
 ## Project setup
 ```
