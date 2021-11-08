@@ -1,11 +1,10 @@
 #include "libdb.h"
 
 int db_connect(MYSQL &mysql, string database) {
-    mysql = mysql_init(0);
-    if (!mysql_real_connect(mysql, "localhost", "root", database, 0, NULL, 0)) {
-        mysql_close(mysql);
-        return 1;
-    }
+  mysql_init(&mysql);
+  if (!mysql_real_connect(&mysql, "localhost", "root", "", database.c_str(), 0, NULL, 0)) {
+    return 1;
+  }
 
-    return 0;
+  return 0;
 }
