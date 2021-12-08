@@ -8,3 +8,14 @@ int db_connect(MYSQL &mysql, string database) {
 
   return 0;
 }
+
+void stringToJson(string strJson, Json::Value json) {
+  Json::Reader reader;
+  bool parsingSuccessful = reader.parse( strJson.c_str(), json );
+  if ( !parsingSuccessful )
+    cout  << "Failed to parse" << reader.getFormattedErrorMessages();
+}
+
+string to_db(string value) {
+  return "'" + value + "'";
+}
